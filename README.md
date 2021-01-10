@@ -1,4 +1,6 @@
 # Work Day Scheduler
+https://github.com/bmcleod12/working-for-the-weekend
+https://bmcleod12.github.io/working-for-the-weekend/
 
 ## Your Task
 
