@@ -31,36 +31,69 @@
       <p id="currentDay" class="lead"></p>
     </header>
 
-    <div class="container">
+    <div class="container" id="schedule">
       <div class="time-block row past">Test
-          <div class="saveBtn">
-            <i class="fas fa-save"></i>
-          </div>
+          <div class="saveBtn fas fa-save"></div>
       </div>
-      <div class="time-block row present">Test</div>
-      <div class="time-block row future">Test</div>
+      <!-- <div class="time-block row present">Test</div>
+      <div class="time-block row future">Test</div> -->
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
-
             // grabs the current date/time from moment.js and assigns it to the currentDay element from above
             function setTime() {
-                var currentDate = moment().format('MMMM Do YYYY, h:mm:ss a');
-                document.getElementById("currentDay").innerHTML = currentDate;
+              var currentDate = moment().format('MMMM Do YYYY, h:mm:ss a');
+              document.getElementById("currentDay").innerHTML = currentDate;
             }
             
-            // tells the program to run the setTime function each second
+            // grabs the current hour from moment.js and ...
+            function setHour() {
+              var currentHour = moment().hour();
+              console.log(currentHour);
+
+              for (var i=0; i <= currentHour; i++) {
+                if (i === currentHour) {
+                  var hourblock = $("<div>");
+                  hourblock.addClass("container row time-block present");
+                  hourblock.text("Test present: " + i);
+                  // hourblock.appendChild("saveBtn");
+                  $("#schedule").append(hourblock);
+                }
+                
+                else {
+                  var hourblock = $("<div>");
+                  hourblock.addClass("container row time-block past");
+                  hourblock.text("Test past: " + i);
+                  $("#schedule").append(hourblock);                  
+                }
+                }
+                
+              for (var i=(currentHour+1); i < 25; i++) {
+                var hourblock = $("<div>");
+                hourblock.addClass("container row time-block future");
+                hourblock.text("Test future: " + i);
+                $("#schedule").append(hourblock);
+                }
+              }
+
+
+            // tells the program to run the setTime function each second and the setHour function each minute - might want to rethink including the for loops as part of the minutely refresh because it's recreating all of those time blocks every minute...instead of refreshing the page. idk.
             setInterval(setTime, 1000);
+            // setInterval(setHour, 60000);
             setTime();
+            setHour();
 
         });
 
+        // moment().add(1, 'hours').calendar();
     // now i want to define how each row is dynamically created based based on which hour of the day we are in
-    // then apply the past/present/future class to the appropriate time blocks
-
+        // if hour = current hour, create time block w class of present ; if before current hour, create w class of past ; if after current hour, create w class of future
+    // allow user to enter text ; save button saves the text where it is/localStorage
+    
+    
     </script>
   </body>
 </html>
