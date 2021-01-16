@@ -1,5 +1,5 @@
 # Work Day Scheduler
-https://github.com/bmcleod12/working-for-the-weekend
+I know I'm taking a hit for this assignment - I'm completely stuck on how to add the schedule text into the localStorage. I've watched videosm tried everything I could, and just can't figure it out.  The screen also doesn't load with the current hour at the top. Just out of stamina; maybe when I'm a better developer I'll be able to figure it out.
 
 https://bmcleod12.github.io/working-for-the-weekend/
 
