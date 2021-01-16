@@ -31,13 +31,18 @@
       <p id="currentDay" class="lead"></p>
     </header>
 
-    <div class="container" id="schedule">
-      <div class="time-block row past">Test
+      <!-- <div class="container" id="schedule"></div>
+        <div class="row">
+          <div><h3>1:00</h3></div>
+
+          <form class="schedule-block"><input class="form-control past time-block"/></form>
+
           <div class="saveBtn fas fa-save"></div>
-      </div>
-      <!-- <div class="time-block row present">Test</div>
-      <div class="time-block row future">Test</div> -->
-    </div>
+        </div>
+      </div> -->
+
+      <div class="container" id="schedule"></div>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -56,26 +61,70 @@
 
               for (var i=0; i <= currentHour; i++) {
                 if (i === currentHour) {
-                  var hourblock = $("<div>");
-                  hourblock.addClass("container row time-block present");
-                  hourblock.text("Test present: " + i);
-                  // hourblock.appendChild("saveBtn");
-                  $("#schedule").append(hourblock);
+                  var wrapperDiv = $("<div>");
+                    wrapperDiv.addClass("row");
+
+                  var displayHour = $("<h3>");
+                    displayHour.text(i + "00 hours");
+                  
+                  var formOutline = $("<form>");
+                    formOutline.addClass("schedule-block");
+
+                  var inputOutline = $("<input>");
+                  inputOutline.addClass("form-control time-block present");
+                  inputOutline.attr("placeholder", "No scheduled meetings");
+                  
+                  var newSaveBtn = $("<div>");
+                  newSaveBtn.addClass("saveBtn fas fa-save");
+                  
+                  formOutline.append(inputOutline);
+                  wrapperDiv.append(displayHour, formOutline, newSaveBtn);
+                  $("#schedule").append(wrapperDiv);  
                 }
                 
                 else {
-                  var hourblock = $("<div>");
-                  hourblock.addClass("container row time-block past");
-                  hourblock.text("Test past: " + i);
-                  $("#schedule").append(hourblock);                  
+                  var wrapperDiv = $("<div>");
+                    wrapperDiv.addClass("row");
+
+                  var displayHour = $("<h3>");
+                    displayHour.text(i + "00 hours");
+                  
+                  var formOutline = $("<form>");
+                    formOutline.addClass("schedule-block");
+
+                  var inputOutline = $("<input>");
+                  inputOutline.addClass("form-control time-block past");
+                  inputOutline.attr("placeholder", "No scheduled meetings");
+                  
+                  var newSaveBtn = $("<div>");
+                  newSaveBtn.addClass("saveBtn fas fa-save");
+                  
+                  formOutline.append(inputOutline);
+                  wrapperDiv.append(displayHour, formOutline, newSaveBtn);
+                  $("#schedule").append(wrapperDiv);                  
                 }
                 }
                 
-              for (var i=(currentHour+1); i < 25; i++) {
-                var hourblock = $("<div>");
-                hourblock.addClass("container row time-block future");
-                hourblock.text("Test future: " + i);
-                $("#schedule").append(hourblock);
+              for (var i=(currentHour+1); i < 24; i++) {
+                var wrapperDiv = $("<div>");
+                    wrapperDiv.addClass("row");
+
+                  var displayHour = $("<h3>");
+                    displayHour.text(i + "00 hours");
+                  
+                  var formOutline = $("<form>");
+                    formOutline.addClass("schedule-block");
+
+                  var inputOutline = $("<input>");
+                  inputOutline.addClass("form-control time-block future");
+                  inputOutline.attr("placeholder", "No scheduled meetings");
+                  
+                  var newSaveBtn = $("<div>");
+                  newSaveBtn.addClass("saveBtn fas fa-save");
+                  
+                  formOutline.append(inputOutline);
+                  wrapperDiv.append(displayHour, formOutline, newSaveBtn);
+                  $("#schedule").append(wrapperDiv);  
                 }
               }
 
