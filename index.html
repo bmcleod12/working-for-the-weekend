@@ -48,6 +48,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
+          var scheduledMeetings = [JSON.parse(localStorage.getItem("scheduledMeetings"))];
+          console.log(scheduledMeetings);
+          
             // grabs the current date/time from moment.js and assigns it to the currentDay element from above
             function setTime() {
               var currentDate = moment().format('MMMM Do YYYY, h:mm:ss a');
@@ -57,10 +60,24 @@
             // grabs the current hour from moment.js and ...
             function setHour() {
               var currentHour = moment().hour();
-              console.log(currentHour);
 
-              for (var i=0; i <= currentHour; i++) {
+              for (var i=0; i < 24; i++) {
+                if (i < currentHour) {
+                  var hourIndicator = "past";
+                  createHourBlock();
+                };
+                
                 if (i === currentHour) {
+                  var hourIndicator = "present";
+                  createHourBlock();
+                };
+
+                if (i > currentHour) {
+                  var hourIndicator = "future";
+                  createHourBlock();
+                };
+
+                function createHourBlock(){
                   var wrapperDiv = $("<div>");
                     wrapperDiv.addClass("row");
 
@@ -71,67 +88,51 @@
                     formOutline.addClass("schedule-block");
 
                   var inputOutline = $("<input>");
-                  inputOutline.addClass("form-control time-block present");
-                  inputOutline.attr("placeholder", "No scheduled meetings");
+                  inputOutline.addClass("form-control time-block").attr("placeholder", "No scheduled meetings").attr("id", "meetingName").attr("data-number", i);
+                    if(hourIndicator == "present") {
+                      inputOutline.addClass("present");
+                    }
+
+                    if(hourIndicator == "past") {
+                      inputOutline.addClass("past");
+                    }
+
+                    if(hourIndicator == "future") {
+                      inputOutline.addClass("future");
+                    }
                   
                   var newSaveBtn = $("<div>");
-                  newSaveBtn.addClass("saveBtn fas fa-save");
+                  newSaveBtn.addClass("saveBtn fas fa-save").attr("id", i);
                   
                   formOutline.append(inputOutline);
                   wrapperDiv.append(displayHour, formOutline, newSaveBtn);
-                  $("#schedule").append(wrapperDiv);  
+                  $("#schedule").append(wrapperDiv);
                 }
-                
-                else {
-                  var wrapperDiv = $("<div>");
-                    wrapperDiv.addClass("row");
 
-                  var displayHour = $("<h3>");
-                    displayHour.text(i + "00 hours");
-                  
-                  var formOutline = $("<form>");
-                    formOutline.addClass("schedule-block");
+                $(".saveBtn").click(function(event) {
+                    event.preventDefault();
 
-                  var inputOutline = $("<input>");
-                  inputOutline.addClass("form-control time-block past");
-                  inputOutline.attr("placeholder", "No scheduled meetings");
-                  
-                  var newSaveBtn = $("<div>");
-                  newSaveBtn.addClass("saveBtn fas fa-save");
-                  
-                  formOutline.append(inputOutline);
-                  wrapperDiv.append(displayHour, formOutline, newSaveBtn);
-                  $("#schedule").append(wrapperDiv);                  
-                }
-                }
-                
-              for (var i=(currentHour+1); i < 24; i++) {
-                var wrapperDiv = $("<div>");
-                    wrapperDiv.addClass("row");
+                    console.log(this.previousElementSibling.children.meetingName.value);
+                    console.log(this.previousElementSibling.children.meetingName.dataset.number);
 
-                  var displayHour = $("<h3>");
-                    displayHour.text(i + "00 hours");
-                  
-                  var formOutline = $("<form>");
-                    formOutline.addClass("schedule-block");
+                    var meetingObject = {
+                      "meeting": this.previousElementSibling.children.meetingName.value,
+                      "timeId": this.previousElementSibling.children.meetingName.dataset.number
+                    };
 
-                  var inputOutline = $("<input>");
-                  inputOutline.addClass("form-control time-block future");
-                  inputOutline.attr("placeholder", "No scheduled meetings");
-                  
-                  var newSaveBtn = $("<div>");
-                  newSaveBtn.addClass("saveBtn fas fa-save");
-                  
-                  formOutline.append(inputOutline);
-                  wrapperDiv.append(displayHour, formOutline, newSaveBtn);
-                  $("#schedule").append(wrapperDiv);  
-                }
+                    console.log(meetingObject);
+
+                    // scheduledMeetings.push(meetingObject);
+                    scheduledMeetings.splice(0,0,meetingObject);
+
+                  localStorage.setItem("scheduledMeetings", JSON.stringify(scheduledMeetings));
+                  console.log(scheduledMeetings);
+                  });
               }
-
+            }
 
             // tells the program to run the setTime function each second and the setHour function each minute - might want to rethink including the for loops as part of the minutely refresh because it's recreating all of those time blocks every minute...instead of refreshing the page. idk.
             setInterval(setTime, 1000);
-            // setInterval(setHour, 60000);
             setTime();
             setHour();
 
